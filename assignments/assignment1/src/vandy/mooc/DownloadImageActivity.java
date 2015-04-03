@@ -1,7 +1,6 @@
 package vandy.mooc;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -27,9 +26,11 @@ public class DownloadImageActivity extends Activity {
         // Always call super class for necessary
         // initialization/implementation.
         // @@ TODO -- you fill in here.
+    	super.onCreate(savedInstanceState);
 
         // Get the URL associated with the Intent data.
         // @@ TODO -- you fill in here.
+    	Uri uri = getIntent().getData();
 
         // Download the image in the background, create an Intent that
         // contains the path to the image file, and set this as the

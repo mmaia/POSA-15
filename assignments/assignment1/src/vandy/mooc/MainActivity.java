@@ -1,5 +1,7 @@
 package vandy.mooc;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +10,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -51,16 +55,33 @@ public class MainActivity extends LifecycleLoggingActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	super.onCreate(savedInstanceState);
         // Always call super class for necessary
         // initialization/implementation.
         // @@ TODO -- you fill in here.
+    	
+    	Log.i(TAG, "Entering MainActivity.onCreate");
 
         // Set the default layout.
         // @@ TODO -- you fill in here.
+    	setContentView(R.layout.main_activity);
 
         // Cache the EditText that holds the urls entered by the user
         // (if any).
-        // @@ TODO -- you fill in here.
+        // @@ TODO -- you fill in here. - 
+    	//TODO - MM QUESTION - I am not sure what they want with "cache" the edit text. Should I keep track of already used urls
+    	// and present them to the user in the future while typing????
+    	mUrlEditText = (EditText) findViewById(R.id.url);
+    	
+    	Button dwldButton = (Button) findViewById(R.id.button1);
+		dwldButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				downloadImage(v);
+			}
+		});
+    	
     }
 
     /**
@@ -71,6 +92,7 @@ public class MainActivity extends LifecycleLoggingActivity {
      */
     public void downloadImage(View view) {
         try {
+        	Log.i(TAG, "Entering MainActivity.downloadImage");
             // Hide the keyboard.
             hideKeyboard(this,
                          mUrlEditText.getWindowToken());
@@ -81,12 +103,17 @@ public class MainActivity extends LifecycleLoggingActivity {
             // it's an Intent that's implemented by the
             // DownloadImageActivity.
             // @@ TODO - you fill in here.
+            Log.i(TAG, "creating intent to download image");
+            Intent downloadImageIntent = makeDownloadImageIntent(getUrl());
 
             // Start the Activity associated with the Intent, which
             // will download the image and then return the Uri for the
             // downloaded image file via the onActivityResult() hook
             // method.
             // @@ TODO -- you fill in here.
+            Log.i(TAG, "starting the download image intent...");
+            startActivityForResult(downloadImageIntent, DOWNLOAD_IMAGE_REQUEST);
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,14 +129,19 @@ public class MainActivity extends LifecycleLoggingActivity {
     protected void onActivityResult(int requestCode,
                                     int resultCode,
                                     Intent data) {
+    	Log.i(TAG, "Entering MainActivity.onActivityResult");
         // Check if the started Activity completed successfully.
         // @@ TODO -- you fill in here, replacing true with the right
         // code.
-        if (true) {
+        if (resultCode == RESULT_OK) {
+        	Log.i(TAG, "Result was OK -- resultCode = RESTULT_OK");
             // Check if the request code is what we're expecting.
             // @@ TODO -- you fill in here, replacing true with the
             // right code.
-            if (true) {
+        	
+        	//now check if the code is the one we want!
+            if (requestCode == DOWNLOAD_IMAGE_REQUEST) {
+            	Log.i(TAG, "Request code was -- requestCode = DOWNLOAD_IMAGE_REQUEST");
                 // Call the makeGalleryIntent() factory method to
                 // create an Intent that will launch the "Gallery" app
                 // by passing in the path to the downloaded image
@@ -125,7 +157,8 @@ public class MainActivity extends LifecycleLoggingActivity {
         // download contents at the given URL.
         // @@ TODO -- you fill in here, replacing true with the right
         // code.
-        else if (true) {
+        else if (resultCode == RESULT_CANCELED) {
+        	Log.e(TAG, "Ooopsss.. something went wrong operation was cancelled.. \"Sleep on it!\" -- resultCode = RESULT_CANCELED");
         }
     }    
 
@@ -138,7 +171,9 @@ public class MainActivity extends LifecycleLoggingActivity {
         // the image.
     	// TODO -- you fill in here, replacing "null" with the proper
     	// code.
-        return null;
+    	File theImage = new File(pathToImageFile);
+    	Intent galleryIntent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(theImage));
+        return galleryIntent;
     }
 
     /**
@@ -149,7 +184,8 @@ public class MainActivity extends LifecycleLoggingActivity {
         // Create an intent that will download the image from the web.
     	// TODO -- you fill in here, replacing "null" with the proper
     	// code.
-        return null;
+    	Intent downloadImageIntent = new Intent(Intent.ACTION_WEB_SEARCH, url);
+        return downloadImageIntent;
     }
 
     /**
@@ -170,7 +206,7 @@ public class MainActivity extends LifecycleLoggingActivity {
         // toast if the URL is invalid.
         // @@ TODO -- you fill in here, replacing "true" with the
         // proper code.
-        if (true)
+        if (URLUtil.isValidUrl(url.toString()))
             return url;
         else {
             Toast.makeText(this,
