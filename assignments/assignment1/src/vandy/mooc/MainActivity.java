@@ -1,6 +1,8 @@
 package vandy.mooc;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -206,7 +209,7 @@ public class MainActivity extends LifecycleLoggingActivity {
         // toast if the URL is invalid.
         // @@ TODO -- you fill in here, replacing "true" with the
         // proper code.
-        if (URLUtil.isValidUrl(url.toString()))
+        if (isUrlValid(url.toString()))
             return url;
         else {
             Toast.makeText(this,
@@ -227,5 +230,20 @@ public class MainActivity extends LifecycleLoggingActivity {
             (Context.INPUT_METHOD_SERVICE);
         mgr.hideSoftInputFromWindow(windowToken,
                                     0);
+    }
+    
+    
+    /**
+     * Better validation of url as the UrlUtil.isValidUrl is not accurate.
+     * @param url - The url to be validated
+     * @return - true if valid false otherwise.
+     */
+    private boolean isUrlValid(String url) {
+        Pattern p = Patterns.WEB_URL;
+        Matcher m = p.matcher(url);
+        if(m.matches())
+            return true;
+        else
+        return false;
     }
 }
