@@ -3,6 +3,7 @@ package vandy.mooc;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * An Activity that downloads an image, stores it in a local file on
@@ -27,6 +28,7 @@ public class DownloadImageActivity extends Activity {
         // initialization/implementation.
         // @@ TODO -- you fill in here.
     	super.onCreate(savedInstanceState);
+    	Log.i(TAG, "Entering DownloadImageActivity.onCreate!");
 
         // Get the URL associated with the Intent data.
         // @@ TODO -- you fill in here.

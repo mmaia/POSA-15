@@ -72,7 +72,7 @@ public class MainActivity extends LifecycleLoggingActivity {
         // Cache the EditText that holds the urls entered by the user
         // (if any).
         // @@ TODO -- you fill in here. - 
-    	//TODO - MM QUESTION - I am not sure what they want with "cache" the edit text. Should I keep track of already used urls
+    	//TODO - QUESTION - I am not sure what they want with "cache" the edit text. Should I keep track of already used urls
     	// and present them to the user in the future while typing????
     	mUrlEditText = (EditText) findViewById(R.id.url);
     	
