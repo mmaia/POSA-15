@@ -20,7 +20,7 @@ public class DownloadImageActivity extends Activity {
     
     
     private Uri uri;
-	private Handler mHandler = new Handler(Looper.getMainLooper());
+//	private Handler handler = new Handler(Looper.getMainLooper());
 	private Uri theImage;
 	private Intent imageIntent;
 
@@ -54,16 +54,15 @@ public class DownloadImageActivity extends Activity {
         // methods should be called in the background thread.  See
         // http://stackoverflow.com/questions/20412871/is-it-safe-to-finish-an-android-activity-from-a-background-thread
         // for more discussion about this topic.
+    	
+    	//thread that download image...
     	Thread downloadThread = new Thread(new DownloadThread());
     	downloadThread.start();
     	
-    	//add the download threa to the Looper to be queued for processing.
-    	mHandler.post(downloadThread);
+    	//TODO - Question: maybe I should also add download thread to the Looper using handler????? 
+    	//Actually this don't work for some reason.
+//    	handler.post(downloadThread);
     	
-    	
-    	
-    	//finish this activity
-//    	finish();
     }
     
     //thread implementation to start the download in background
@@ -75,7 +74,16 @@ public class DownloadImageActivity extends Activity {
     				.downloadImage(getApplicationContext(), uri);
     		imageIntent = new Intent();
     		imageIntent.setData(theImage);
-    		setResult(RESULT_OK, imageIntent);
+    		int result = (theImage != null) ? Activity.RESULT_OK : Activity.RESULT_CANCELED;
+    		setResult(result, imageIntent);
+//    		DownloadImageActivity.this.finish();
+    		//close this activity using runOnuiThread...
+    		runOnUiThread(new Runnable(){
+        		@Override
+        		public void run(){
+        			DownloadImageActivity.this.finish();
+        		}
+        	});
     	}
     }
 }
