@@ -77,7 +77,7 @@ public class DownloadImageActivity extends Activity {
     		int result = (theImage != null) ? Activity.RESULT_OK : Activity.RESULT_CANCELED;
     		setResult(result, imageIntent);
 //    		DownloadImageActivity.this.finish();
-    		//close this activity using runOnuiThread...
+    		//close this activity using runOnuiThread as recommended....
     		runOnUiThread(new Runnable(){
         		@Override
         		public void run(){
