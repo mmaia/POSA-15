@@ -9,6 +9,9 @@ import android.util.Log;
  * synchronizing on thread completion in the ping-pong application.
  */
 public class OutputStrategy {
+	
+	private static final String TAG = "OutPutStrategy";
+	
     /** 
      * Define a WeakReference to avoid memory leaks.  See
      * www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html
@@ -30,11 +33,13 @@ public class OutputStrategy {
      * display managed by the UI thread.
      */
     public void print(final String outputString) {
+    	Log.i(TAG, "OutPutStrategy.print");
         // Call the MainActivity.print() method, which create a
         // Runnable that's ultimately posted to the UI Thread via
         // another Thread that sleeps for 0.5 seconds to let the user
         // see what's going on.
         // @@ TODO - you fill in here.
+    	mOuterClass.get().print(outputString);
     }
 
     /**
