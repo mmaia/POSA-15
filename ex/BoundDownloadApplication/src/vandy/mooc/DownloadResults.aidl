@@ -8,7 +8,7 @@ package vandy.mooc;
  *
  *	  This file generates a java interface in /gen
  */
-interface DownloadCallback {
+interface DownloadResults {
     /**
      * Send the location of a downloaded file on the file system back
      * to the caller.
